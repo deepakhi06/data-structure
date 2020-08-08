@@ -46,10 +46,10 @@ public class LinkedlistReverse {
 	/**
 	 * Logic for this would be:
 	 * 
-	 *1- Have three nodes i.e previousNode,currentNode and nextNode 
-	 *2- When currentNode is starting node, then previousNode will be null 
-	 *3- Assign  currentNode.next to previousNode to reverse the link. 
-	 *4- In each iteration move currentNode and previousNode by 1 node.
+	 * 1- Have three nodes i.e previousNode,currentNode and nextNode 2- When
+	 * currentNode is starting node, then previousNode will be null 3- Assign
+	 * currentNode.next to previousNode to reverse the link. 4- In each
+	 * iteration move currentNode and previousNode by 1 node.
 	 * 
 	 * @param head
 	 * @param n
@@ -71,6 +71,42 @@ public class LinkedlistReverse {
 		return previousNode;
 	}
 
+	public static Node reverseLinkedListRecursive(Node currentNode) {
+		if (currentNode == null || currentNode.next == null) {
+			return currentNode;
+		}
+		Node temp = reverseLinkedListRecursive(currentNode.next);
+		currentNode.next.next = currentNode;
+		currentNode.next = null;
+		return temp;
+	}
+
+	/*
+	 * It reverses the linked list in group of K
+	 */
+	public static Node  reverseInGroup(Node head, int k) {
+		Node prev, next;
+		prev = next = null;
+
+		Node node = head;
+
+		int i = 0;
+
+		while (node != null && i < k) {
+			next = node.next;
+			node.next = prev;
+			prev = node;
+			node = next;
+			i++;
+		}
+
+		if (next != null) {
+			head.next = reverseInGroup(next, k);
+		}
+
+		return prev;
+	}
+
 	public static void main(String[] args) {
 		LinkedlistReverse list = new LinkedlistReverse();
 		// Creating a linked list
@@ -82,11 +118,16 @@ public class LinkedlistReverse {
 		list.addToTheLast(new Node(2));
 
 		list.printList(head);
-		//Reversing LinkedList
-		Node reverseHead=reverseLinkedList(head);
+		// Reversing LinkedList
+		// Node reverseHead = reverseLinkedList(head);
 		System.out.println("After reversing");
+
+		//Node reverseHead = reverseLinkedListRecursive(head);
+		//list.printList(reverseHead);
+		
+		Node reverseHead=reverseInGroup(head,3);
 		list.printList(reverseHead);
- 
+
 	}
 
 }
